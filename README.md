@@ -33,3 +33,5 @@ Dengan `SEED_DEMO=true` (default), setup juga membuat akun demo:
 Password kedua akun demo diatur oleh `SEED_DEMO_PASSWORD` (default `Demo#2026LZ`). Ganti password demo sebelum aplikasi digunakan secara publik. Akun baru dapat mendaftar sebagai pembeli atau penjual; pembuatan dan pengelolaan admin dibatasi untuk setup/admin.
 
 Jika katalog tidak dapat mengambil data dari database, aplikasi menampilkan delapan produk contoh untuk pratinjau. Produk tersebut diberi label dan tidak dapat dipesan; perbaiki koneksi database agar katalog aktif kembali.
+
+GitHub Pages hanya dapat menyajikan pratinjau statis. Untuk mengaktifkan login, pemesanan, dashboard, dan data MySQL, jalankan atau deploy server Node.js ke layanan yang mendukung backend.

@@ -123,21 +123,24 @@ const ART = {
 };
 
 /* ===== Foto produk: aset lokal di public/img/products (Pexels, lisensi bebas pakai) ===== */
+const APP_BASE = new URL('../', import.meta.url);
+const assetUrl = (path) => new URL(path, APP_BASE).href;
+
 const PHOTO = {
-  washer: '/img/products/washer.jpg',
-  'washer-clothes': '/img/products/washer-clothes.jpg',
-  ironing: '/img/products/ironing.jpg',
-  folded: '/img/products/folded.jpg',
-  bedding: '/img/products/bedding.jpg',
-  hangers: '/img/products/hangers.jpg',
-  pillows: '/img/products/pillows.jpg',
-  curtain: '/img/products/curtain.jpg',
-  carpet: '/img/products/carpet.jpg',
-  sneakers: '/img/products/sneakers.jpg',
-  tote: '/img/products/tote.jpg',
-  teddy: '/img/products/teddy.jpg',
-  detergent: '/img/products/detergent.jpg',
-  'detergent-pour': '/img/products/detergent-pour.jpg',
+  washer: assetUrl('img/products/washer.jpg'),
+  'washer-clothes': assetUrl('img/products/washer-clothes.jpg'),
+  ironing: assetUrl('img/products/ironing.jpg'),
+  folded: assetUrl('img/products/folded.jpg'),
+  bedding: assetUrl('img/products/bedding.jpg'),
+  hangers: assetUrl('img/products/hangers.jpg'),
+  pillows: assetUrl('img/products/pillows.jpg'),
+  curtain: assetUrl('img/products/curtain.jpg'),
+  carpet: assetUrl('img/products/carpet.jpg'),
+  sneakers: assetUrl('img/products/sneakers.jpg'),
+  tote: assetUrl('img/products/tote.jpg'),
+  teddy: assetUrl('img/products/teddy.jpg'),
+  detergent: assetUrl('img/products/detergent.jpg'),
+  'detergent-pour': assetUrl('img/products/detergent-pour.jpg'),
 };
 
 /** Memilih foto yang paling cocok dari nama dan kategori produk. */

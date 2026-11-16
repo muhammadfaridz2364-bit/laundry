@@ -159,7 +159,9 @@ async function boot() {
       .filter((result) => result.status === 'rejected')
       .map((result) => result.reason.message),
   )];
-  if (errors.length) {
+  if (state.productsUsingDemoData) {
+    notify('Mode pratinjau aktif. Login dan pemesanan memerlukan server database.', 'info', 8000);
+  } else if (errors.length) {
     notify(`Gagal memuat data: ${errors.join(' ')}`, 'error', 8000);
   }
 

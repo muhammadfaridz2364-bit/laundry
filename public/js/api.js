@@ -1,3 +1,5 @@
+const API_BASE = new URL('../../api/', import.meta.url);
+
 async function request(path, { method = 'GET', body } = {}) {
   const options = {
     method,
@@ -12,7 +14,7 @@ async function request(path, { method = 'GET', body } = {}) {
 
   let response;
   try {
-    response = await fetch(`/api${path}`, options);
+    response = await fetch(new URL(path.replace(/^\/+/, ''), API_BASE), options);
   } catch {
     throw new Error('Tidak bisa menghubungi server.');
   }

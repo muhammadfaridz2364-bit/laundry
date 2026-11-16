@@ -33,6 +33,7 @@ app.use('/api', (req, res) => {
 });
 
 app.use(express.static(publicDir, { extensions: ['html'], index: 'index.html' }));
+app.use('/public', express.static(publicDir, { extensions: ['html'] }));
 app.get('*', (req, res) => {
   res.sendFile(join(here, 'index.html'));
 });
