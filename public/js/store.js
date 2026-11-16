@@ -1,9 +1,11 @@
 import { esc } from './utils.js';
 import { api } from './api.js';
+import { DEMO_PRODUCTS } from './demo-products.js';
 
 export const state = {
   user: null,
   products: [],
+  productsUsingDemoData: false,
   categories: [],
   settings: { waNumber: '', waTemplate: '' },
   filters: { q: '', kategori: '', sort: 'name-asc' },
@@ -35,6 +37,7 @@ export async function refreshProducts() {
   const data = await api.products();
   state.products = data.products;
   state.categories = data.categories;
+  state.productsUsingDemoData = false;
 }
 
 export async function refreshSettings() {
@@ -46,4 +49,10 @@ export function populateCategoryDatalist() {
   if (!list) return;
   const categories = [...new Set(['Layanan', 'Perawatan Khusus', 'Perlengkapan', ...state.categories])];
   list.innerHTML = categories.map((category) => `<option value="${esc(category)}"></option>`).join('');
+}
+
+export function useDemoProducts() {
+  state.products = DEMO_PRODUCTS;
+  state.categories = [...new Set(DEMO_PRODUCTS.map((product) => product.kategori))];
+  state.productsUsingDemoData = true;
 }

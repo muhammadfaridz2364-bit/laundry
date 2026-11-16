@@ -34,6 +34,7 @@ export function init() {
 
 export function render() {
   $('#hero-art').innerHTML = heroArt();
+  $('#catalog-demo-note').hidden = !state.productsUsingDemoData;
   renderCategories();
   renderGrid();
   renderRecommend();
@@ -110,7 +111,9 @@ function cardHTML(product) {
   const role = state.user?.role;
 
   let action;
-  if (habis) {
+  if (state.productsUsingDemoData) {
+    action = '<button class="primary" type="button" disabled>Contoh, belum bisa dipesan</button>';
+  } else if (habis) {
     action = '<button class="primary" type="button" disabled>Stok habis</button>';
   } else if (role === 'buyer') {
     action = `<button class="primary" type="button" data-order="${esc(product.id)}">Pesan via WhatsApp</button>`;
@@ -124,6 +127,7 @@ function cardHTML(product) {
     <img src="${esc(image)}" alt="${esc(product.nama)}" loading="lazy">
     <div class="body">
       <div>
+        ${state.productsUsingDemoData ? '<span class="badge warn">Data contoh</span>' : ''}
         ${product.unggulan ? '<span class="badge">⭐ Unggulan</span>' : ''}
         <span class="badge ${habis ? 'warn' : ''}">${habis ? 'Stok habis' : `Stok: ${product.stok}`}</span>
       </div>

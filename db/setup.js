@@ -8,20 +8,10 @@ import mysql from 'mysql2/promise';
 import { config } from '../src/config.js';
 import { hashPassword, randomPassword } from '../src/password.js';
 import { DEFAULT_TEMPLATE, DEFAULT_WA } from '../src/wa.js';
+import { DEMO_PRODUCTS } from '../public/js/demo-products.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const envFile = join(here, '..', '.env');
-
-const SAMPLE = [
-  ['p-001', 'Cuci Setrika Reguler', 'Layanan', 7000, 40, 'Cuci, keringkan, dan setrika rapi. Harga per kilogram.', 1],
-  ['p-002', 'Setrika Saja', 'Layanan', 5000, 60, 'Setrika tanpa cuci untuk pakaian yang sudah bersih. Harga per kilogram.', 0],
-  ['p-003', 'Cuci Express 6 Jam', 'Layanan', 12000, 15, 'Selesai dalam 6 jam, per kilogram, sesuai kuota harian.', 1],
-  ['p-004', 'Dry Clean Jas', 'Perawatan Khusus', 45000, 8, 'Perawatan dry clean untuk jas dan blazer. Harga per potong.', 0],
-  ['p-005', 'Cuci Selimut Tebal', 'Perawatan Khusus', 35000, 12, 'Selimut dan bed cover tebal, harga per potong.', 0],
-  ['p-006', 'Cuci Sepatu', 'Perawatan Khusus', 40000, 5, 'Cuci sepatu sneakers, harga per pasang.', 0],
-  ['p-007', 'Pewangi Pakaian 800 ml', 'Perlengkapan', 22000, 30, 'Pewangi aroma lembut untuk bilasan terakhir. Ukuran 800 ml.', 0],
-  ['p-008', 'Kantong Laundry Zip', 'Perlengkapan', 3000, 120, 'Kantong plastik zip untuk memisahkan pakaian per pelanggan.', 1],
-];
 
 function splitStatements(sql) {
   return sql
@@ -195,11 +185,20 @@ async function main() {
         role: 'buyer',
       });
 
-      for (const [id, nama, kategori, harga, stok, deskripsi, unggulan] of SAMPLE) {
+      for (const product of DEMO_PRODUCTS) {
         await db.execute(
           `INSERT IGNORE INTO products (id, seller_id, nama, kategori, harga, stok, deskripsi, image_url, unggulan)
            VALUES (?, ?, ?, ?, ?, ?, ?, '', ?)`,
-          [id, seller.id, nama, kategori, harga, stok, deskripsi, unggulan],
+          [
+            product.id,
+            seller.id,
+            product.nama,
+            product.kategori,
+            product.harga,
+            product.stok,
+            product.deskripsi,
+            product.unggulan ? 1 : 0,
+          ],
         );
       }
 

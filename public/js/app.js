@@ -1,6 +1,6 @@
 import { $, $$, esc, placeholderFor, roleLabel } from './utils.js';
 import { api } from './api.js';
-import { notify, refreshProducts, refreshSession, refreshSettings, state } from './store.js';
+import { notify, refreshProducts, refreshSession, refreshSettings, state, useDemoProducts } from './store.js';
 import * as catalogView from './catalog.js';
 import * as dashboardView from './dashboard.js';
 import * as ordersView from './orders.js';
@@ -151,10 +151,16 @@ async function boot() {
   usersView.init();
   authView.init();
 
-  try {
-    await Promise.all([refreshSession(), refreshProducts(), refreshSettings()]);
-  } catch (error) {
-    notify(`Gagal memuat data: ${error.message}`, 'error', 8000);
+  const results = await Promise.allSettled([refreshSession(), refreshProducts(), refreshSettings()]);
+  if (results[1].status === 'rejected') useDemoProducts();
+
+  const errors = [...new Set(
+    results
+      .filter((result) => result.status === 'rejected')
+      .map((result) => result.reason.message),
+  )];
+  if (errors.length) {
+    notify(`Gagal memuat data: ${errors.join(' ')}`, 'error', 8000);
   }
 
   renderChrome();

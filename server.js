@@ -44,8 +44,7 @@ try {
   console.log(`✓ Terhubung ke MySQL ${config.db.host}:${config.db.port}/${config.db.database}`);
 } catch (error) {
   console.error('✗ Gagal terhubung ke MySQL:', error.message);
-  console.error('  Periksa DB_* di .env lalu jalankan `npm run db:setup`.');
-  process.exit(1);
+  console.error('  Halaman tetap tersedia, tetapi fitur yang memakai database perlu DB_* yang valid di .env.');
 }
 
 const server = app.listen(config.port, () => {
