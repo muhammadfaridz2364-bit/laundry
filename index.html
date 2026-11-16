@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f2">
+  <meta name="description" content="Ruang ngobrol warga Banyuwangi untuk berbagi kabar, rekomendasi, dan cerita lokal.">
+  <title>Chat Banyuwangi — Cerita dari ujung timur Jawa</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17352f;
+      --muted: #64736d;
+      --paper: #f8f7f2;
+      --green: #176b53;
+      --lime: #d5f06b;
+      --line: #e6e8df;
+      --white: #fff;
+      --shadow: 0 24px 70px rgba(25, 55, 45, .09);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .wrap { width: min(1160px, calc(100% - 48px)); margin-inline: auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; min-height: 82px; border-bottom: 1px solid rgba(23, 53, 47, .08); }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -.04em; font-size: 19px; }
+    .brand-mark { width: 38px; height: 38px; display: grid; place-items: center; color: var(--ink); background: var(--lime); border-radius: 13px 13px 13px 4px; }
+    .brand-mark svg { width: 21px; height: 21px; }
+    .nav { display: flex; align-items: center; gap: 34px; color: #50615b; font-size: 14px; font-weight: 600; }
+    .nav a:hover { color: var(--green); }
+    .nav-cta, .button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 999px; padding: 13px 19px; background: var(--green); color: white; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .2s, background .2s; }
+    .nav-cta:hover, .button:hover { transform: translateY(-2px); background: #105640; }
+    .menu-button { display: none; border: 0; background: transparent; font-size: 25px; color: var(--ink); cursor: pointer; }
+    .hero { display: grid; grid-template-columns: 1.03fr .97fr; gap: 48px; align-items: center; padding: 74px 0 82px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 20px; color: var(--green); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+    .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--green); }
+    h1 { max-width: 610px; margin: 0; font-size: clamp(44px, 6vw, 72px); line-height: .99; letter-spacing: -.07em; }
+    h1 span { color: var(--green); }
+    .hero-copy { max-width: 490px; margin: 24px 0 29px; color: var(--muted); font-size: 17px; line-height: 1.75; }
+    .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
+    .button.secondary { background: transparent; color: var(--ink); border: 1px solid #d8ddd5; }
+    .button.secondary:hover { background: white; }
+    .social-proof { display: flex; align-items: center; gap: 12px; margin-top: 33px; color: var(--muted); font-size: 13px; }
+    .avatars { display: flex; padding-left: 7px; }
+    .avatar { display: grid; place-items: center; width: 31px; height: 31px; margin-left: -7px; border: 2px solid var(--paper); border-radius: 50%; background: #e6b798; font-size: 14px; }
+    .avatar:nth-child(2) { background: #d5e2a0; }.avatar:nth-child(3) { background: #a8d4c5; }.avatar:nth-child(4) { background: #e9d19b; }
+    .social-proof strong { color: var(--ink); }
+    .visual { position: relative; min-height: 460px; display: grid; place-items: center; }
+    .visual-bg { position: absolute; width: min(100%, 480px); aspect-ratio: 1; border-radius: 50%; background: #e8efdc; }
+    .island { position: absolute; inset: 9% 4% 5%; overflow: hidden; border-radius: 48% 52% 45% 55% / 45% 43% 57% 55%; background: linear-gradient(145deg, #bdd7ac, #7fb18f); transform: rotate(-7deg); }
+    .island::before { content: ""; position: absolute; inset: -18% -8%; background: radial-gradient(ellipse at 65% 23%, #f7e8b8 0 10%, transparent 10.5%), radial-gradient(ellipse at 55% 48%, #5e9b76 0 16%, transparent 16.5%), radial-gradient(ellipse at 37% 66%, #c4d99e 0 22%, transparent 22.5%), radial-gradient(ellipse at 78% 80%, #4a8b6c 0 19%, transparent 19.5%); }
+    .island::after { content: "BANYUWANGI"; position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.83); font-weight: 900; letter-spacing: .22em; font-size: clamp(14px, 2vw, 21px); transform: rotate(7deg); text-shadow: 0 2px 12px rgba(23,53,47,.22); }
+    .chat-card { position: absolute; width: min(310px, 76%); right: 0; bottom: 18px; padding: 19px; border: 1px solid rgba(23,53,47,.06); border-radius: 20px; background: rgba(255,255,255,.94); box-shadow: var(--shadow); backdrop-filter: blur(12px); }
+    .chat-head { display: flex; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+    .chat-icon { display: grid; place-items: center; width: 37px; height: 37px; border-radius: 13px; background: var(--lime); font-size: 18px; }
+    .chat-head strong { display: block; font-size: 13px; }.chat-head small { color: var(--muted); font-size: 11px; }
+    .online { width: 8px; height: 8px; margin-left: auto; border-radius: 50%; background: #51b982; box-shadow: 0 0 0 4px #e6f5ec; }
+    .message { width: fit-content; max-width: 95%; margin-top: 13px; padding: 10px 12px; border-radius: 4px 13px 13px; background: #f1f4ed; color: #42544d; font-size: 12px; line-height: 1.5; }
+    .message.mine { margin-left: auto; border-radius: 13px 4px 13px 13px; background: #e5f4df; }
+    .message small { display: block; margin-top: 4px; color: #84918b; text-align: right; font-size: 10px; }
+    .float-tag { position: absolute; top: 49px; left: -5px; padding: 12px 15px; border-radius: 14px; background: white; box-shadow: var(--shadow); font-size: 12px; font-weight: 700; transform: rotate(-4deg); }
+    .float-tag span { margin-right: 5px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 25px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .stat { display: flex; justify-content: center; align-items: baseline; gap: 8px; color: var(--muted); font-size: 13px; }.stat strong { color: var(--ink); font-size: 23px; letter-spacing: -.04em; }
+    section.content { padding: 92px 0; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+    .section-heading h2 { max-width: 510px; margin: 0; font-size: clamp(31px, 4vw, 45px); line-height: 1.08; letter-spacing: -.055em; }
+    .section-heading p { max-width: 390px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .rooms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+    .room { min-height: 205px; padding: 21px; border: 1px solid var(--line); border-radius: 19px; background: rgba(255,255,255,.52); transition: transform .2s, box-shadow .2s, background .2s; }
+    .room:hover { transform: translateY(-5px); background: white; box-shadow: 0 15px 35px rgba(25,55,45,.07); }
+    .room-icon { display: grid; place-items: center; width: 43px; height: 43px; margin-bottom: 25px; border-radius: 14px; background: #e9f0db; font-size: 20px; }
+    .room:nth-child(2) .room-icon { background: #f8e8cf; }.room:nth-child(3) .room-icon { background: #dcecf0; }.room:nth-child(4) .room-icon { background: #f2e0df; }
+    .room h3 { margin: 0 0 7px; font-size: 16px; letter-spacing: -.03em; }.room p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .room small { display: inline-block; margin-top: 16px; color: var(--green); font-size: 11px; font-weight: 700; }
+    .banner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 30px; overflow: hidden; padding: 42px 48px; border-radius: 25px; background: var(--green); color: white; }
+    .banner::after { content: ""; position: absolute; width: 260px; height: 260px; top: -150px; right: 19%; border: 1px solid rgba(255,255,255,.14); border-radius: 50%; box-shadow: 0 0 0 30px rgba(255,255,255,.035), 0 0 0 60px rgba(255,255,255,.025); }
+    .banner h2 { position: relative; z-index: 1; margin: 0 0 8px; font-size: clamp(24px, 3vw, 34px); letter-spacing: -.05em; }.banner p { position: relative; z-index: 1; margin: 0; color: #d4e5dc; font-size: 14px; }
+    .banner .button { position: relative; z-index: 1; flex: 0 0 auto; background: var(--lime); color: var(--ink); }.banner .button:hover { background: #e2f88e; }
+    footer { padding: 31px 0; color: var(--muted); font-size: 12px; }.footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 18px; }.footer-brand { color: var(--ink); font-weight: 800; }
+    .toast { position: fixed; z-index: 5; right: 24px; bottom: 24px; max-width: min(360px, calc(100% - 48px)); padding: 15px 18px; border-radius: 13px; background: var(--ink); color: white; box-shadow: var(--shadow); font-size: 13px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: .25s; }.toast.show { opacity: 1; transform: translateY(0); }
+    @media (max-width: 850px) { .hero { gap: 15px; }.visual { min-height: 380px; }.rooms { grid-template-columns: repeat(2, 1fr); }.nav { gap: 20px; } }
+    @media (max-width: 650px) { .wrap { width: min(100% - 34px, 520px); }.topbar { min-height: 70px; }.menu-button { display: block; }.nav { display: none; position: absolute; z-index: 4; top: 70px; left: 0; right: 0; padding: 20px 24px 24px; border-bottom: 1px solid var(--line); background: var(--paper); flex-direction: column; align-items: stretch; gap: 18px; }.nav.open { display: flex; }.nav-cta { text-align: center; }.hero { grid-template-columns: 1fr; padding: 58px 0 51px; }.hero-copy { font-size: 15px; }.visual { min-height: 340px; margin-top: 8px; }.visual-bg { width: 320px; max-width: 92%; }.island { inset: 6% 7% 4%; }.chat-card { right: 0; bottom: 4px; }.float-tag { top: 28px; left: 0; }.stats { gap: 5px; }.stat { flex-direction: column; align-items: center; gap: 3px; font-size: 11px; text-align: center; }.stat strong { font-size: 20px; } section.content { padding: 68px 0; }.section-heading { display: block; }.section-heading p { margin-top: 15px; }.rooms { gap: 10px; }.room { min-height: 190px; padding: 16px; }.room-icon { margin-bottom: 18px; }.banner { align-items: flex-start; flex-direction: column; padding: 31px 25px; }.footer-inner { align-items: flex-start; flex-direction: column; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="wrap topbar">
+    <a class="brand" href="#beranda" aria-label="Chat Banyuwangi, beranda">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 18.5 6.2 15A7.5 7.5 0 1 1 9 18.1L5 18.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 10.5h6M9 13.5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      Chat Banyuwangi
+    </a>
+    <button class="menu-button" type="button" aria-label="Buka menu" aria-expanded="false">☰</button>
+    <nav class="nav" aria-label="Navigasi utama">
+      <a href="#tentang">Tentang</a><a href="#ruang">Ruang obrolan</a><a href="#gabung">Cara bergabung</a>
+      <a class="nav-cta" href="#gabung">Ikut ngobrol <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main id="beranda">
+    <section class="wrap hero" id="tentang">
+      <div>
+        <p class="eyebrow">Ruang warga Banyuwangi</p>
+        <h1>Cerita lokal,<br><span>obrolan akrab.</span></h1>
+        <p class="hero-copy">Tempat warga dan siapa saja yang sayang Banyuwangi berbagi kabar, rekomendasi, dan cerita sehari-hari dari ujung timur Jawa.</p>
+        <div class="hero-actions"><a class="button" href="#ruang">Jelajahi obrolan <span aria-hidden="true">→</span></a><a class="button secondary" href="#gabung">Tentang komunitas</a></div>
+        <div class="social-proof"><div class="avatars" aria-hidden="true"><span class="avatar">👩🏽</span><span class="avatar">🧑🏻</span><span class="avatar">👨🏾</span><span class="avatar">👩🏻</span></div><span><strong>Mulai dari lingkunganmu</strong><br>Semua cerita lokal punya tempat.</span></div>
+      </div>
+      <div class="visual" aria-label="Ilustrasi peta Banyuwangi dan obrolan warga">
+        <div class="visual-bg"></div><div class="island"></div>
+        <div class="float-tag"><span>📍</span> Ujung timur Jawa</div>
+        <div class="chat-card">
+          <div class="chat-head"><span class="chat-icon">💬</span><span><strong>Obrolan warga</strong><small>Suasana Banyuwangi hari ini</small></span><span class="online" aria-label="aktif"></span></div>
+          <div class="message">Ada rekomendasi tempat sarapan enak di kota? <small>08.41</small></div>
+          <div class="message mine">Coba pecel pitik! Banyak pilihan di sekitar pusat kota 🌿 <small>08.43 ✓✓</small></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap stats" aria-label="Tentang Banyuwangi"><div class="stat"><strong>25</strong><span>kecamatan untuk dijelajahi</span></div><div class="stat"><strong>1</strong><span>semangat guyub rukun</span></div><div class="stat"><strong>∞</strong><span>cerita untuk dibagikan</span></div></div>
+
+    <section class="wrap content" id="ruang">
+      <div class="section-heading"><div><p class="eyebrow">Pilih topikmu</p><h2>Selalu ada obrolan yang nyambung.</h2></div><p>Dari info sekitar sampai kuliner favorit, mulai dari topik yang dekat dengan keseharianmu.</p></div>
+      <div class="rooms">
+        <article class="room"><div class="room-icon" aria-hidden="true">📣</div><h3>Kabar Banyuwangi</h3><p>Info kegiatan, kabar lingkungan, dan hal menarik di sekitar kita.</p><small>Info & komunitas ↗</small></article>
+        <article class="room"><div class="room-icon" aria-hidden="true">🍜</div><h3>Kuliner & jalan-jalan</h3><p>Berbagi tempat makan, sudut kota, dan tujuan liburan lokal.</p><small>Rekomendasi warga ↗</small></article>
+        <article class="room"><div class="room-icon" aria-hidden="true">🌱</div><h3>Usaha lokal</h3><p>Kenalan dengan produk, jasa, dan karya dari pelaku lokal.</p><small>Dukung lokal ↗</small></article>
+        <article class="room"><div class="room-icon" aria-hidden="true">🤝</div><h3>Ruang warga</h3><p>Berkenalan, bertanya, dan saling bantu dengan santun.</p><small>Ngobrol bareng ↗</small></article>
+      </div>
+    </section>
+
+    <section class="wrap" id="gabung">
+      <div class="banner"><div><h2>Obrolan baik dimulai dari kamu.</h2><p>Kenalkan diri dan ceritakan hal yang kamu suka dari Banyuwangi.</p></div><button class="button join-button" type="button">Saya mau bergabung <span aria-hidden="true">→</span></button></div>
+    </section>
+  </main>
+
+  <footer><div class="wrap footer-inner"><a class="footer-brand" href="#beranda">Chat Banyuwangi</a><span>Ruang berbagi cerita dan semangat lokal.</span><span>© <span id="year"></span> Chat Banyuwangi</span></div></footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script>
+    const menuButton = document.querySelector('.menu-button');
+    const nav = document.querySelector('.nav');
+    const toast = document.querySelector('.toast');
+    let toastTimer;
+    menuButton.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(open));
+      menuButton.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+      menuButton.textContent = open ? '×' : '☰';
+    });
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.setAttribute('aria-label', 'Buka menu');
+      menuButton.textContent = '☰';
+    }));
+    document.querySelector('.join-button').addEventListener('click', () => {
+      toast.textContent = 'Tambahkan tautan grup atau kontak komunitas di tombol ini agar pengunjung bisa bergabung.';
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 4500);
+    });
+    document.querySelector('#year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
