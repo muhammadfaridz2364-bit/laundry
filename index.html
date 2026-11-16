@@ -1,167 +1,703 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f8f7f2">
-  <meta name="description" content="Ruang ngobrol warga Banyuwangi untuk berbagi kabar, rekomendasi, dan cerita lokal.">
-  <title>Chat Banyuwangi — Cerita dari ujung timur Jawa</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --ink: #17352f;
-      --muted: #64736d;
-      --paper: #f8f7f2;
-      --green: #176b53;
-      --lime: #d5f06b;
-      --line: #e6e8df;
-      --white: #fff;
-      --shadow: 0 24px 70px rgba(25, 55, 45, .09);
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; background: var(--paper); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; }
-    .wrap { width: min(1160px, calc(100% - 48px)); margin-inline: auto; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; min-height: 82px; border-bottom: 1px solid rgba(23, 53, 47, .08); }
-    .brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -.04em; font-size: 19px; }
-    .brand-mark { width: 38px; height: 38px; display: grid; place-items: center; color: var(--ink); background: var(--lime); border-radius: 13px 13px 13px 4px; }
-    .brand-mark svg { width: 21px; height: 21px; }
-    .nav { display: flex; align-items: center; gap: 34px; color: #50615b; font-size: 14px; font-weight: 600; }
-    .nav a:hover { color: var(--green); }
-    .nav-cta, .button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 999px; padding: 13px 19px; background: var(--green); color: white; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .2s, background .2s; }
-    .nav-cta:hover, .button:hover { transform: translateY(-2px); background: #105640; }
-    .menu-button { display: none; border: 0; background: transparent; font-size: 25px; color: var(--ink); cursor: pointer; }
-    .hero { display: grid; grid-template-columns: 1.03fr .97fr; gap: 48px; align-items: center; padding: 74px 0 82px; }
-    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 20px; color: var(--green); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
-    .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--green); }
-    h1 { max-width: 610px; margin: 0; font-size: clamp(44px, 6vw, 72px); line-height: .99; letter-spacing: -.07em; }
-    h1 span { color: var(--green); }
-    .hero-copy { max-width: 490px; margin: 24px 0 29px; color: var(--muted); font-size: 17px; line-height: 1.75; }
-    .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
-    .button.secondary { background: transparent; color: var(--ink); border: 1px solid #d8ddd5; }
-    .button.secondary:hover { background: white; }
-    .social-proof { display: flex; align-items: center; gap: 12px; margin-top: 33px; color: var(--muted); font-size: 13px; }
-    .avatars { display: flex; padding-left: 7px; }
-    .avatar { display: grid; place-items: center; width: 31px; height: 31px; margin-left: -7px; border: 2px solid var(--paper); border-radius: 50%; background: #e6b798; font-size: 14px; }
-    .avatar:nth-child(2) { background: #d5e2a0; }.avatar:nth-child(3) { background: #a8d4c5; }.avatar:nth-child(4) { background: #e9d19b; }
-    .social-proof strong { color: var(--ink); }
-    .visual { position: relative; min-height: 460px; display: grid; place-items: center; }
-    .visual-bg { position: absolute; width: min(100%, 480px); aspect-ratio: 1; border-radius: 50%; background: #e8efdc; }
-    .island { position: absolute; inset: 9% 4% 5%; overflow: hidden; border-radius: 48% 52% 45% 55% / 45% 43% 57% 55%; background: linear-gradient(145deg, #bdd7ac, #7fb18f); transform: rotate(-7deg); }
-    .island::before { content: ""; position: absolute; inset: -18% -8%; background: radial-gradient(ellipse at 65% 23%, #f7e8b8 0 10%, transparent 10.5%), radial-gradient(ellipse at 55% 48%, #5e9b76 0 16%, transparent 16.5%), radial-gradient(ellipse at 37% 66%, #c4d99e 0 22%, transparent 22.5%), radial-gradient(ellipse at 78% 80%, #4a8b6c 0 19%, transparent 19.5%); }
-    .island::after { content: "BANYUWANGI"; position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.83); font-weight: 900; letter-spacing: .22em; font-size: clamp(14px, 2vw, 21px); transform: rotate(7deg); text-shadow: 0 2px 12px rgba(23,53,47,.22); }
-    .chat-card { position: absolute; width: min(310px, 76%); right: 0; bottom: 18px; padding: 19px; border: 1px solid rgba(23,53,47,.06); border-radius: 20px; background: rgba(255,255,255,.94); box-shadow: var(--shadow); backdrop-filter: blur(12px); }
-    .chat-head { display: flex; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
-    .chat-icon { display: grid; place-items: center; width: 37px; height: 37px; border-radius: 13px; background: var(--lime); font-size: 18px; }
-    .chat-head strong { display: block; font-size: 13px; }.chat-head small { color: var(--muted); font-size: 11px; }
-    .online { width: 8px; height: 8px; margin-left: auto; border-radius: 50%; background: #51b982; box-shadow: 0 0 0 4px #e6f5ec; }
-    .message { width: fit-content; max-width: 95%; margin-top: 13px; padding: 10px 12px; border-radius: 4px 13px 13px; background: #f1f4ed; color: #42544d; font-size: 12px; line-height: 1.5; }
-    .message.mine { margin-left: auto; border-radius: 13px 4px 13px 13px; background: #e5f4df; }
-    .message small { display: block; margin-top: 4px; color: #84918b; text-align: right; font-size: 10px; }
-    .float-tag { position: absolute; top: 49px; left: -5px; padding: 12px 15px; border-radius: 14px; background: white; box-shadow: var(--shadow); font-size: 12px; font-weight: 700; transform: rotate(-4deg); }
-    .float-tag span { margin-right: 5px; }
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 25px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-    .stat { display: flex; justify-content: center; align-items: baseline; gap: 8px; color: var(--muted); font-size: 13px; }.stat strong { color: var(--ink); font-size: 23px; letter-spacing: -.04em; }
-    section.content { padding: 92px 0; }
-    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
-    .section-heading h2 { max-width: 510px; margin: 0; font-size: clamp(31px, 4vw, 45px); line-height: 1.08; letter-spacing: -.055em; }
-    .section-heading p { max-width: 390px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
-    .rooms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-    .room { min-height: 205px; padding: 21px; border: 1px solid var(--line); border-radius: 19px; background: rgba(255,255,255,.52); transition: transform .2s, box-shadow .2s, background .2s; }
-    .room:hover { transform: translateY(-5px); background: white; box-shadow: 0 15px 35px rgba(25,55,45,.07); }
-    .room-icon { display: grid; place-items: center; width: 43px; height: 43px; margin-bottom: 25px; border-radius: 14px; background: #e9f0db; font-size: 20px; }
-    .room:nth-child(2) .room-icon { background: #f8e8cf; }.room:nth-child(3) .room-icon { background: #dcecf0; }.room:nth-child(4) .room-icon { background: #f2e0df; }
-    .room h3 { margin: 0 0 7px; font-size: 16px; letter-spacing: -.03em; }.room p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
-    .room small { display: inline-block; margin-top: 16px; color: var(--green); font-size: 11px; font-weight: 700; }
-    .banner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 30px; overflow: hidden; padding: 42px 48px; border-radius: 25px; background: var(--green); color: white; }
-    .banner::after { content: ""; position: absolute; width: 260px; height: 260px; top: -150px; right: 19%; border: 1px solid rgba(255,255,255,.14); border-radius: 50%; box-shadow: 0 0 0 30px rgba(255,255,255,.035), 0 0 0 60px rgba(255,255,255,.025); }
-    .banner h2 { position: relative; z-index: 1; margin: 0 0 8px; font-size: clamp(24px, 3vw, 34px); letter-spacing: -.05em; }.banner p { position: relative; z-index: 1; margin: 0; color: #d4e5dc; font-size: 14px; }
-    .banner .button { position: relative; z-index: 1; flex: 0 0 auto; background: var(--lime); color: var(--ink); }.banner .button:hover { background: #e2f88e; }
-    footer { padding: 31px 0; color: var(--muted); font-size: 12px; }.footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 18px; }.footer-brand { color: var(--ink); font-weight: 800; }
-    .toast { position: fixed; z-index: 5; right: 24px; bottom: 24px; max-width: min(360px, calc(100% - 48px)); padding: 15px 18px; border-radius: 13px; background: var(--ink); color: white; box-shadow: var(--shadow); font-size: 13px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: .25s; }.toast.show { opacity: 1; transform: translateY(0); }
-    @media (max-width: 850px) { .hero { gap: 15px; }.visual { min-height: 380px; }.rooms { grid-template-columns: repeat(2, 1fr); }.nav { gap: 20px; } }
-    @media (max-width: 650px) { .wrap { width: min(100% - 34px, 520px); }.topbar { min-height: 70px; }.menu-button { display: block; }.nav { display: none; position: absolute; z-index: 4; top: 70px; left: 0; right: 0; padding: 20px 24px 24px; border-bottom: 1px solid var(--line); background: var(--paper); flex-direction: column; align-items: stretch; gap: 18px; }.nav.open { display: flex; }.nav-cta { text-align: center; }.hero { grid-template-columns: 1fr; padding: 58px 0 51px; }.hero-copy { font-size: 15px; }.visual { min-height: 340px; margin-top: 8px; }.visual-bg { width: 320px; max-width: 92%; }.island { inset: 6% 7% 4%; }.chat-card { right: 0; bottom: 4px; }.float-tag { top: 28px; left: 0; }.stats { gap: 5px; }.stat { flex-direction: column; align-items: center; gap: 3px; font-size: 11px; text-align: center; }.stat strong { font-size: 20px; } section.content { padding: 68px 0; }.section-heading { display: block; }.section-heading p { margin-top: 15px; }.rooms { gap: 10px; }.room { min-height: 190px; padding: 16px; }.room-icon { margin-bottom: 18px; }.banner { align-items: flex-start; flex-direction: column; padding: 31px 25px; }.footer-inner { align-items: flex-start; flex-direction: column; } }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laundry Zahra — Katalog & Dashboard</title>
+<style>
+:root{
+  --bg:#fff1f7; --card:#fff; --ink:#3b0a24; --muted:#7a4d63;
+  --brand:#db2777; --brand-2:#be185d; --brand-3:#9d174d;
+  --soft:#fdf2f8; --line:#fbcfe8; --line-strong:#f9a8d4;
+  --warn-bg:#f3f4f6; --warn-ink:#374151;
+  --danger:#b42318; --radius:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:linear-gradient(90deg,#db2777,#ec4899);color:#fff;padding:14px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(219,39,119,.25)}
+header h1{font-size:20px;margin:0;display:flex;align-items:center;gap:8px}
+nav{display:flex;gap:6px}
+nav button{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.7);padding:7px 14px;border-radius:999px;cursor:pointer;font:inherit}
+nav button:hover{background:rgba(255,255,255,.15)}
+nav button[aria-current="page"]{background:#fff;color:var(--brand-3);font-weight:600}
+nav button:focus-visible,button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--brand-3);outline-offset:2px}
+main{max-width:1100px;margin:0 auto;padding:20px}
+.hero{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;background:linear-gradient(135deg,#fbcfe8,#fce7f3 60%,#fff);border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.hero .eyebrow{margin:0;color:var(--brand-2);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.hero h2{margin:4px 0 6px;font-size:26px;color:var(--brand-3)}
+.hero p{margin:0;color:var(--muted)}
+.hero-art svg{width:220px;height:auto;display:block;border-radius:12px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;align-items:center}
+input,select,textarea{font:inherit;padding:9px 11px;border:1px solid var(--line-strong);border-radius:10px;background:#fff;color:var(--ink);max-width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--brand)}
+input[type=search]{flex:1;min-width:200px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(219,39,119,.15)}
+.card img{width:100%;height:150px;object-fit:cover;background:var(--soft);display:block}
+.card .body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{margin:4px 0 0;font-size:17px}
+.badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--brand-3);margin-right:4px;border:1px solid var(--line)}
+.badge.star{background:#fdf2f8;color:var(--brand-3)}
+.badge.warn{background:var(--warn-bg);color:var(--warn-ink);border-color:#e5e7eb}
+.price{font-weight:700;font-size:17px;color:var(--brand-2)}
+.muted{color:var(--muted);font-size:14px}
+.primary{display:block;width:100%;text-align:center;text-decoration:none;background:var(--brand);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;font:inherit;font-weight:600;box-sizing:border-box}
+.primary:hover{background:var(--brand-2)}
+.primary:disabled{background:#6b7280;cursor:not-allowed}
+.ghost{background:#fff;border:1px solid var(--line-strong);padding:8px 12px;border-radius:10px;cursor:pointer;font:inherit;color:var(--ink)}
+.ghost:hover{background:var(--soft)}
+.danger{background:#fff;color:var(--danger);border:1px solid #f04438;padding:8px 12px;border-radius:10px;cursor:pointer;font:inherit}
+.danger:hover{background:#fef3f2}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:8px 0 16px}
+.stat{background:#fff;border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:var(--radius);padding:16px;color:var(--muted);font-size:14px}
+.stat b{display:block;font-size:28px;color:var(--brand-3)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:16px}
+.panel h3{margin:0 0 4px;color:var(--brand-3);font-size:17px}
+.wa-form{display:grid;gap:8px;margin-top:10px}
+.wa-form label{display:grid;gap:4px;font-size:14px;font-weight:600;color:var(--brand-3)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:14px;vertical-align:middle}
+th{background:var(--soft);color:var(--brand-3)}
+tr:last-child td{border-bottom:0}
+.name-cell{display:flex;gap:10px;align-items:center}
+.thumb{width:56px;height:42px;object-fit:cover;border-radius:8px;border:1px solid var(--line);flex:none;background:var(--soft)}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.notice{padding:10px 14px;border-radius:10px;background:var(--soft);color:var(--brand-3);margin:0 0 12px;font-size:14px;border:1px solid var(--line-strong)}
+dialog{border:0;border-radius:var(--radius);padding:0;width:min(520px,94vw);color:var(--ink)}
+dialog::backdrop{background:rgba(59,10,36,.45)}
+form.edit{display:grid;gap:10px;padding:20px}
+form.edit label{display:grid;gap:4px;font-size:14px;font-weight:600;color:var(--brand-3)}
+form.edit label.check{display:flex;align-items:center;gap:8px}
+form.edit input[type=checkbox]{accent-color:var(--brand)}
+.preview-wrap{display:grid;gap:4px}
+.preview{width:100%;height:140px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:var(--soft)}
+.err{color:var(--danger);font-size:14px;min-height:20px}
+.hidden{display:none !important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.actions-end{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+h2.dlg-title{margin:0;font-size:20px;color:var(--brand-3)}
+#empty{color:var(--muted)}
+</style>
 </head>
 <body>
-  <header class="wrap topbar">
-    <a class="brand" href="#beranda" aria-label="Chat Banyuwangi, beranda">
-      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 18.5 6.2 15A7.5 7.5 0 1 1 9 18.1L5 18.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 10.5h6M9 13.5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
-      Chat Banyuwangi
-    </a>
-    <button class="menu-button" type="button" aria-label="Buka menu" aria-expanded="false">☰</button>
-    <nav class="nav" aria-label="Navigasi utama">
-      <a href="#tentang">Tentang</a><a href="#ruang">Ruang obrolan</a><a href="#gabung">Cara bergabung</a>
-      <a class="nav-cta" href="#gabung">Ikut ngobrol <span aria-hidden="true">↗</span></a>
-    </nav>
-  </header>
+<header>
+  <h1>🫧 Laundry Zahra</h1>
+  <nav aria-label="Navigasi utama">
+    <button type="button" data-view="catalog" aria-current="page">Katalog</button>
+    <button type="button" data-view="dashboard">Dashboard</button>
+  </nav>
+</header>
 
-  <main id="beranda">
-    <section class="wrap hero" id="tentang">
+<main>
+  <div id="notice" aria-live="polite"></div>
+
+  <section id="view-catalog" aria-label="Katalog produk">
+    <div class="hero">
       <div>
-        <p class="eyebrow">Ruang warga Banyuwangi</p>
-        <h1>Cerita lokal,<br><span>obrolan akrab.</span></h1>
-        <p class="hero-copy">Tempat warga dan siapa saja yang sayang Banyuwangi berbagi kabar, rekomendasi, dan cerita sehari-hari dari ujung timur Jawa.</p>
-        <div class="hero-actions"><a class="button" href="#ruang">Jelajahi obrolan <span aria-hidden="true">→</span></a><a class="button secondary" href="#gabung">Tentang komunitas</a></div>
-        <div class="social-proof"><div class="avatars" aria-hidden="true"><span class="avatar">👩🏽</span><span class="avatar">🧑🏻</span><span class="avatar">👨🏾</span><span class="avatar">👩🏻</span></div><span><strong>Mulai dari lingkunganmu</strong><br>Semua cerita lokal punya tempat.</span></div>
+        <p class="eyebrow">Jasa cuci &amp; setrika</p>
+        <h2>Cucian bersih, wangi, dan rapi</h2>
+        <p>Pilih layanan atau perlengkapan, lalu pesan langsung lewat WhatsApp.</p>
       </div>
-      <div class="visual" aria-label="Ilustrasi peta Banyuwangi dan obrolan warga">
-        <div class="visual-bg"></div><div class="island"></div>
-        <div class="float-tag"><span>📍</span> Ujung timur Jawa</div>
-        <div class="chat-card">
-          <div class="chat-head"><span class="chat-icon">💬</span><span><strong>Obrolan warga</strong><small>Suasana Banyuwangi hari ini</small></span><span class="online" aria-label="aktif"></span></div>
-          <div class="message">Ada rekomendasi tempat sarapan enak di kota? <small>08.41</small></div>
-          <div class="message mine">Coba pecel pitik! Banyak pilihan di sekitar pusat kota 🌿 <small>08.43 ✓✓</small></div>
+      <div class="hero-art" id="hero-art" aria-hidden="true"></div>
+    </div>
+
+    <div class="toolbar">
+      <label class="sr" for="q">Cari produk</label>
+      <input id="q" type="search" placeholder="Cari nama atau deskripsi…" autocomplete="off">
+      <label class="sr" for="cat">Filter kategori</label>
+      <select id="cat"><option value="">Semua kategori</option></select>
+      <label class="sr" for="sort">Urutkan</label>
+      <select id="sort">
+        <option value="name-asc">Nama A–Z</option>
+        <option value="price-asc">Harga terendah</option>
+        <option value="price-desc">Harga tertinggi</option>
+        <option value="stock-desc">Stok terbanyak</option>
+      </select>
+    </div>
+    <p class="muted" id="count" aria-live="polite"></p>
+    <div class="grid" id="grid"></div>
+    <p id="empty" class="hidden">Tidak ada produk yang cocok.</p>
+  </section>
+
+  <section id="view-dashboard" class="hidden" aria-label="Dashboard produk">
+    <div class="stats">
+      <div class="stat">Total produk<b id="stat-total">0</b></div>
+      <div class="stat">Total stok<b id="stat-stok">0</b></div>
+      <div class="stat">Jumlah kategori<b id="stat-kat">0</b></div>
+    </div>
+
+    <section class="panel" aria-labelledby="wa-title">
+      <h3 id="wa-title">Nomor WhatsApp toko</h3>
+      <p class="muted" style="margin:0">Nomor ini dipakai untuk tombol "Pesan via WhatsApp" di katalog.</p>
+      <p id="wa-current" style="margin:8px 0 0"></p>
+      <p id="wa-note" class="notice hidden"></p>
+      <form id="wa-form" class="wa-form" novalidate>
+        <label>Ubah nomor
+          <input id="wa-input" name="waNumber" type="tel" inputmode="tel" autocomplete="off" placeholder="Contoh: 0812-3456-7890 atau +62 812 3456 7890">
+        </label>
+        <p class="muted" id="wa-preview" style="margin:0"></p>
+        <div class="err" id="wa-err" role="alert"></div>
+        <div class="actions-end">
+          <button type="button" class="ghost" id="wa-reset">Kembali ke placeholder</button>
+          <button type="submit" class="primary" style="width:auto">Simpan nomor</button>
         </div>
-      </div>
+      </form>
     </section>
 
-    <div class="wrap stats" aria-label="Tentang Banyuwangi"><div class="stat"><strong>25</strong><span>kecamatan untuk dijelajahi</span></div><div class="stat"><strong>1</strong><span>semangat guyub rukun</span></div><div class="stat"><strong>∞</strong><span>cerita untuk dibagikan</span></div></div>
+    <div class="toolbar">
+      <button class="primary" id="btn-add" type="button" style="width:auto">+ Tambah produk</button>
+      <button class="ghost" id="btn-reset" type="button">Muat ulang data contoh</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Unggulan</th><th>Aksi</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
 
-    <section class="wrap content" id="ruang">
-      <div class="section-heading"><div><p class="eyebrow">Pilih topikmu</p><h2>Selalu ada obrolan yang nyambung.</h2></div><p>Dari info sekitar sampai kuliner favorit, mulai dari topik yang dekat dengan keseharianmu.</p></div>
-      <div class="rooms">
-        <article class="room"><div class="room-icon" aria-hidden="true">📣</div><h3>Kabar Banyuwangi</h3><p>Info kegiatan, kabar lingkungan, dan hal menarik di sekitar kita.</p><small>Info & komunitas ↗</small></article>
-        <article class="room"><div class="room-icon" aria-hidden="true">🍜</div><h3>Kuliner & jalan-jalan</h3><p>Berbagi tempat makan, sudut kota, dan tujuan liburan lokal.</p><small>Rekomendasi warga ↗</small></article>
-        <article class="room"><div class="room-icon" aria-hidden="true">🌱</div><h3>Usaha lokal</h3><p>Kenalan dengan produk, jasa, dan karya dari pelaku lokal.</p><small>Dukung lokal ↗</small></article>
-        <article class="room"><div class="room-icon" aria-hidden="true">🤝</div><h3>Ruang warga</h3><p>Berkenalan, bertanya, dan saling bantu dengan santun.</p><small>Ngobrol bareng ↗</small></article>
-      </div>
-    </section>
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <form class="edit" id="form" novalidate>
+    <h2 class="dlg-title" id="dlg-title">Tambah produk</h2>
+    <label>Nama
+      <input name="nama" maxlength="80" required>
+    </label>
+    <label>Kategori
+      <input name="kategori" maxlength="40" list="kategori-list" required>
+      <datalist id="kategori-list"></datalist>
+    </label>
+    <label>Harga (Rp)
+      <input name="harga" type="number" min="0" step="1" required>
+    </label>
+    <label>Stok
+      <input name="stok" type="number" min="0" step="1" required>
+    </label>
+    <label>Deskripsi
+      <textarea name="deskripsi" rows="3" maxlength="300"></textarea>
+    </label>
+    <label>URL gambar (opsional, http/https)
+      <input name="imageUrl" type="url" placeholder="Kosongkan untuk ilustrasi otomatis">
+    </label>
+    <div class="preview-wrap">
+      <span class="muted" style="font-weight:600;color:var(--brand-3)">Pratinjau gambar</span>
+      <img id="preview" class="preview" alt="Pratinjau">
+    </div>
+    <label class="check">
+      <input name="unggulan" type="checkbox"> Tandai sebagai unggulan
+    </label>
+    <div class="err" id="form-err" role="alert"></div>
+    <div class="actions-end">
+      <button type="button" class="ghost" id="cancel">Batal</button>
+      <button type="submit" class="primary" style="width:auto">Simpan</button>
+    </div>
+  </form>
+</dialog>
 
-    <section class="wrap" id="gabung">
-      <div class="banner"><div><h2>Obrolan baik dimulai dari kamu.</h2><p>Kenalkan diri dan ceritakan hal yang kamu suka dari Banyuwangi.</p></div><button class="button join-button" type="button">Saya mau bergabung <span aria-hidden="true">→</span></button></div>
-    </section>
-  </main>
+<script>
+/* ============ KONSTANTA ============ */
+const STORAGE_KEY = 'laundry-zahra:products:v1';
+const SETTINGS_KEY = 'laundry-zahra:settings:v1';
+// Nomor default (placeholder). Bisa diubah lewat Dashboard > Nomor WhatsApp toko.
+const DEFAULT_WA = '6200000000000';
+const WA_RE = /^62\d{8,13}$/; // 62 diikuti 8–13 digit (total 10–15 digit)
+const CATEGORY_SUGGESTIONS = ['Layanan', 'Perawatan Khusus', 'Perlengkapan'];
 
-  <footer><div class="wrap footer-inner"><a class="footer-brand" href="#beranda">Chat Banyuwangi</a><span>Ruang berbagi cerita dan semangat lokal.</span><span>© <span id="year"></span> Chat Banyuwangi</span></div></footer>
-  <div class="toast" role="status" aria-live="polite"></div>
-  <script>
-    const menuButton = document.querySelector('.menu-button');
-    const nav = document.querySelector('.nav');
-    const toast = document.querySelector('.toast');
-    let toastTimer;
-    menuButton.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      menuButton.setAttribute('aria-expanded', String(open));
-      menuButton.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
-      menuButton.textContent = open ? '×' : '☰';
-    });
-    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-      nav.classList.remove('open');
-      menuButton.setAttribute('aria-expanded', 'false');
-      menuButton.setAttribute('aria-label', 'Buka menu');
-      menuButton.textContent = '☰';
-    }));
-    document.querySelector('.join-button').addEventListener('click', () => {
-      toast.textContent = 'Tambahkan tautan grup atau kontak komunitas di tombol ini agar pengunjung bisa bergabung.';
-      toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('show'), 4500);
-    });
-    document.querySelector('#year').textContent = new Date().getFullYear();
-  </script>
+const SAMPLE = [
+  { id:'p-001', nama:'Cuci Setrika Reguler', kategori:'Layanan', harga:7000, stok:40, deskripsi:'Cuci, keringkan, dan setrika rapi. Harga per kilogram.', imageUrl:'', unggulan:true },
+  { id:'p-002', nama:'Setrika Saja', kategori:'Layanan', harga:5000, stok:60, deskripsi:'Setrika tanpa cuci untuk pakaian yang sudah bersih. Harga per kilogram.', imageUrl:'', unggulan:false },
+  { id:'p-003', nama:'Cuci Express 6 Jam', kategori:'Layanan', harga:12000, stok:15, deskripsi:'Selesai dalam 6 jam, per kilogram, sesuai kuota harian.', imageUrl:'', unggulan:true },
+  { id:'p-004', nama:'Dry Clean Jas', kategori:'Perawatan Khusus', harga:45000, stok:8, deskripsi:'Perawatan dry clean untuk jas dan blazer. Harga per potong.', imageUrl:'', unggulan:false },
+  { id:'p-005', nama:'Cuci Selimut Tebal', kategori:'Perawatan Khusus', harga:35000, stok:0, deskripsi:'Selimut dan bed cover tebal, harga per potong.', imageUrl:'', unggulan:false },
+  { id:'p-006', nama:'Cuci Sepatu', kategori:'Perawatan Khusus', harga:40000, stok:5, deskripsi:'Cuci sepatu sneakers, harga per pasang.', imageUrl:'', unggulan:false },
+  { id:'p-007', nama:'Pewangi Pakaian 800 ml', kategori:'Perlengkapan', harga:22000, stok:30, deskripsi:'Pewangi aroma lembut untuk bilasan terakhir. Ukuran 800 ml.', imageUrl:'', unggulan:false },
+  { id:'p-008', nama:'Kantong Laundry Zip', kategori:'Perlengkapan', harga:3000, stok:120, deskripsi:'Kantong plastik zip untuk memisahkan pakaian per pelanggan.', imageUrl:'', unggulan:true }
+];
+
+/* ============ ILUSTRASI (SVG buatan sendiri, tanpa aset eksternal) ============ */
+const ART = {
+  washer: `
+    <rect x="92" y="18" width="136" height="118" rx="20" fill="#fff" stroke="#be185d" stroke-width="4"/>
+    <rect x="108" y="32" width="104" height="16" rx="6" fill="#fbcfe8"/>
+    <circle cx="234" cy="40" r="5" fill="#db2777"/>
+    <circle cx="160" cy="92" r="36" fill="#f9a8d4" stroke="#be185d" stroke-width="4"/>
+    <circle cx="160" cy="92" r="20" fill="#fdf2f8" stroke="#db2777" stroke-width="3"/>
+    <path d="M150 84 Q160 74 170 84" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="52" cy="52" r="10" fill="#fff" stroke="#f472b6" stroke-width="3"/>
+    <circle cx="40" cy="100" r="7" fill="#fff" stroke="#f472b6" stroke-width="3"/>
+    <circle cx="278" cy="112" r="12" fill="#fff" stroke="#f472b6" stroke-width="3"/>
+    <circle cx="268" cy="62" r="6" fill="#fff" stroke="#f472b6" stroke-width="2"/>`,
+  express: `
+    <rect x="92" y="18" width="136" height="118" rx="20" fill="#fff" stroke="#be185d" stroke-width="4"/>
+    <rect x="108" y="32" width="104" height="16" rx="6" fill="#fbcfe8"/>
+    <circle cx="160" cy="92" r="36" fill="#f9a8d4" stroke="#be185d" stroke-width="4"/>
+    <circle cx="160" cy="92" r="20" fill="#fdf2f8" stroke="#db2777" stroke-width="3"/>
+    <circle cx="282" cy="36" r="20" fill="#be185d"/>
+    <path d="M282 24 V36 L290 42" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="52" cy="52" r="10" fill="#fff" stroke="#f472b6" stroke-width="3"/>
+    <circle cx="40" cy="110" r="7" fill="#fff" stroke="#f472b6" stroke-width="3"/>`,
+  iron: `
+    <path d="M140 40 Q132 30 140 20 M168 40 Q160 30 168 20" fill="none" stroke="#f472b6" stroke-width="3" stroke-linecap="round"/>
+    <path d="M84 98 Q84 74 118 74 L206 74 Q242 74 244 98 L244 108 L84 108 Z" fill="#fff" stroke="#be185d" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M84 108 H244 V116 Q244 122 238 122 H90 Q84 122 84 116 Z" fill="#db2777"/>
+    <path d="M100 74 Q112 52 146 58" fill="none" stroke="#be185d" stroke-width="5" stroke-linecap="round"/>
+    <path d="M110 90 H200" stroke="#f9a8d4" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="52" cy="60" r="10" fill="#fff" stroke="#f472b6" stroke-width="3"/>
+    <circle cx="268" cy="104" r="8" fill="#fff" stroke="#f472b6" stroke-width="3"/>`,
+  jacket: `
+    <path d="M160 30 Q160 18 172 20 Q180 24 172 34 Q166 40 160 46" fill="none" stroke="#be185d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M160 46 L118 70 M160 46 L202 70" stroke="#be185d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M118 76 L140 70 L180 70 L202 76 L198 136 L122 136 Z" fill="#fff" stroke="#be185d" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M160 70 V136" stroke="#f472b6" stroke-width="3"/>
+    <circle cx="140" cy="100" r="2.5" fill="#db2777"/><circle cx="140" cy="116" r="2.5" fill="#db2777"/>
+    <path d="M262 40 L266 50 L276 54 L266 58 L262 68 L258 58 L248 54 L258 50 Z" fill="#f472b6"/>`,
+  blanket: `
+    <rect x="88" y="34" width="144" height="96" rx="16" fill="#fff" stroke="#be185d" stroke-width="4"/>
+    <path d="M100 58 H220 M100 78 H220 M100 98 H220 M100 118 H220" stroke="#f9a8d4" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="50" cy="60" r="10" fill="#fff" stroke="#f472b6" stroke-width="3"/>
+    <circle cx="272" cy="112" r="8" fill="#fff" stroke="#f472b6" stroke-width="3"/>`,
+  shoe: `
+    <path d="M78 110 V84 Q78 74 92 78 L120 90 Q138 98 160 96 L238 96 Q256 98 256 112 V116 H78 Z" fill="#fff" stroke="#be185d" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M78 108 H256 V116 H78 Z" fill="#db2777"/>
+    <path d="M104 88 L118 96 M126 92 L140 100" stroke="#f472b6" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="44" cy="70" r="9" fill="#fff" stroke="#f472b6" stroke-width="3"/>
+    <circle cx="276" cy="78" r="6" fill="#fff" stroke="#f472b6" stroke-width="3"/>`,
+  bottle: `
+    <rect x="142" y="26" width="36" height="16" rx="4" fill="#be185d"/>
+    <path d="M132 42 H188 Q196 42 196 52 V122 Q196 132 186 132 H134 Q124 132 124 122 V52 Q124 42 132 42 Z" fill="#f9a8d4" stroke="#be185d" stroke-width="4"/>
+    <rect x="134" y="74" width="52" height="34" rx="6" fill="#fff"/>
+    <path d="M144 90 H176 M144 98 H170" stroke="#db2777" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="258" cy="60" r="8" fill="#fff" stroke="#f472b6" stroke-width="3"/>
+    <circle cx="60" cy="110" r="10" fill="#fff" stroke="#f472b6" stroke-width="3"/>`,
+  bag: `
+    <path d="M108 62 H212 L222 130 Q222 138 214 138 H106 Q98 138 98 130 Z" fill="#fff" stroke="#be185d" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M134 62 Q134 34 160 34 Q186 34 186 62" fill="none" stroke="#be185d" stroke-width="4"/>
+    <rect x="104" y="84" width="112" height="10" fill="#f9a8d4"/>
+    <path d="M120 106 H200" stroke="#f472b6" stroke-width="3" stroke-dasharray="6 6"/>
+    <circle cx="268" cy="54" r="8" fill="#fff" stroke="#f472b6" stroke-width="3"/>`
+};
+
+const svgWrap = inner => `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="150" viewBox="0 0 320 150"><rect width="320" height="150" fill="#fce7f3"/>${inner}</svg>`;
+const svgUri = inner => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgWrap(inner));
+
+function artKey(p){
+  const n = (p.nama || '').toLowerCase();
+  if (n.includes('express') || n.includes('6 jam')) return 'express';
+  if (n.includes('setrika saja')) return 'iron';
+  if (n.includes('setrika')) return 'washer';
+  if (n.includes('jas') || n.includes('dry')) return 'jacket';
+  if (n.includes('selimut')) return 'blanket';
+  if (n.includes('sepatu')) return 'shoe';
+  if (n.includes('pewangi')) return 'bottle';
+  if (n.includes('kantong') || n.includes('zip')) return 'bag';
+  if (p.kategori === 'Perlengkapan') return 'bottle';
+  if (p.kategori === 'Perawatan Khusus') return 'jacket';
+  return 'washer';
+}
+
+function illustrationFor(p){
+  return svgUri(ART[artKey(p)]);
+}
+
+/* ============ UTILITAS ============ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clone = x => JSON.parse(JSON.stringify(x));
+const rupiah = n => new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(n);
+const newId = () => 'p-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+function isSafeUrl(s){
+  try { const u = new URL(s); return u.protocol === 'https:' || u.protocol === 'http:'; }
+  catch { return false; }
+}
+
+// Placeholder inisial, dipakai hanya jika gambar (termasuk URL pengguna) gagal dimuat
+function placeholderFor(name){
+  const initials = (String(name || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('') || '?').toUpperCase();
+  return svgUri(`<circle cx="160" cy="75" r="40" fill="#f9a8d4"/><text x="160" y="75" dominant-baseline="middle" text-anchor="middle" font-family="system-ui,sans-serif" font-size="36" font-weight="700" fill="#831843">${esc(initials)}</text>`);
+}
+
+// Ubah input nomor (0812-..., +62 812 ...) menjadi bentuk 62xxxx tanpa spasi/tanda
+function normalizeWa(raw){
+  let s = String(raw ?? '').replace(/[\s\-().]/g, '');
+  if (s.startsWith('+')) s = s.slice(1);
+  if (s.startsWith('0')) s = '62' + s.slice(1);
+  return s;
+}
+
+function waLink(p){
+  const text = `Halo Laundry Zahra, saya ingin memesan: ${p.nama} (${rupiah(p.harga)}). Apakah tersedia?`;
+  return `https://wa.me/${settings.waNumber}?text=${encodeURIComponent(text)}`;
+}
+
+/* ============ VALIDASI ============ */
+function validate(p){
+  const errors = [];
+  if (typeof p.nama !== 'string' || p.nama.trim().length < 2 || p.nama.trim().length > 80)
+    errors.push('Nama 2–80 karakter.');
+  if (typeof p.kategori !== 'string' || p.kategori.trim().length < 1 || p.kategori.trim().length > 40)
+    errors.push('Kategori wajib diisi, maks 40 karakter.');
+  if (typeof p.harga !== 'number' || !Number.isFinite(p.harga) || p.harga < 0)
+    errors.push('Harga harus angka ≥ 0.');
+  if (!Number.isInteger(p.stok) || p.stok < 0)
+    errors.push('Stok harus bilangan bulat ≥ 0.');
+  if (typeof p.deskripsi !== 'string' || p.deskripsi.length > 300)
+    errors.push('Deskripsi maks 300 karakter.');
+  if (typeof p.imageUrl !== 'string' || (p.imageUrl !== '' && !isSafeUrl(p.imageUrl)))
+    errors.push('URL gambar harus http/https atau kosong.');
+  if (typeof p.unggulan !== 'boolean')
+    errors.push('Unggulan tidak valid.');
+  return errors;
+}
+
+function normalize(p){
+  if (!p || typeof p.id !== 'string') return null;
+  const n = {
+    id: p.id,
+    nama: p.nama,
+    kategori: p.kategori,
+    harga: p.harga,
+    stok: p.stok,
+    deskripsi: p.deskripsi ?? '',
+    imageUrl: p.imageUrl ?? '',
+    unggulan: p.unggulan === true
+  };
+  return validate(n).length ? null : n;
+}
+
+/* ============ STORAGE ============ */
+let noticeTimer;
+function notify(msg, ms = 6000){
+  clearTimeout(noticeTimer);
+  $('#notice').innerHTML = msg ? `<div class="notice" role="status">${esc(msg)}</div>` : '';
+  if (msg) noticeTimer = setTimeout(() => { $('#notice').innerHTML = ''; }, ms);
+}
+
+function load(){
+  let raw;
+  try {
+    raw = localStorage.getItem(STORAGE_KEY);
+  } catch {
+    notify('Penyimpanan lokal tidak tersedia. Perubahan hanya ada sementara di halaman ini.', 10000);
+    return clone(SAMPLE);
+  }
+  if (raw === null) {
+    persist(clone(SAMPLE));
+    return clone(SAMPLE);
+  }
+  try {
+    const data = JSON.parse(raw);
+    if (!Array.isArray(data)) throw new Error('bukan array');
+    const valid = data.map(normalize).filter(Boolean);
+    if (valid.length === 0 && data.length > 0) throw new Error('semua baris tidak valid');
+    if (valid.length < data.length)
+      notify(`${data.length - valid.length} baris data tidak valid dilewati.`);
+    return valid;
+  } catch {
+    notify('Data tersimpan rusak. Memuat data contoh.', 8000);
+    return clone(SAMPLE);
+  }
+}
+
+function persist(list){
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    return true;
+  } catch {
+    notify('Gagal menyimpan ke penyimpanan lokal. Perubahan hanya ada sementara di halaman ini.', 10000);
+    return false;
+  }
+}
+
+function loadSettings(){
+  try {
+    const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? 'null');
+    if (s && typeof s.waNumber === 'string' && WA_RE.test(s.waNumber)) return { waNumber: s.waNumber };
+  } catch { /* abaikan, pakai default */ }
+  return { waNumber: DEFAULT_WA };
+}
+
+function saveSettings(){
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    return true;
+  } catch {
+    notify('Gagal menyimpan pengaturan. Nomor hanya berlaku sementara di halaman ini.', 10000);
+    return false;
+  }
+}
+
+/* ============ STATE ============ */
+let products = load();
+let settings = loadSettings();
+const state = { q:'', cat:'', sort:'name-asc', view:'catalog', editingId:null };
+
+const sorters = {
+  'name-asc':   (a, b) => a.nama.localeCompare(b.nama, 'id'),
+  'price-asc':  (a, b) => a.harga - b.harga || a.nama.localeCompare(b.nama, 'id'),
+  'price-desc': (a, b) => b.harga - a.harga || a.nama.localeCompare(b.nama, 'id'),
+  'stock-desc': (a, b) => b.stok - a.stok || a.nama.localeCompare(b.nama, 'id')
+};
+
+/* ============ RENDER ============ */
+function filtered(){
+  const q = state.q.trim().toLowerCase();
+  const list = products.filter(p =>
+    (!state.cat || p.kategori === state.cat) &&
+    (!q || p.nama.toLowerCase().includes(q) || p.deskripsi.toLowerCase().includes(q))
+  );
+  list.sort(sorters[state.sort]);
+  return list;
+}
+
+function cardHTML(p){
+  const habis = p.stok === 0;
+  const img = p.imageUrl ? p.imageUrl : illustrationFor(p);
+  const action = habis
+    ? '<button class="primary" type="button" disabled>Stok habis</button>'
+    : `<a class="primary" href="${esc(waLink(p))}" target="_blank" rel="noopener noreferrer">Pesan via WhatsApp</a>`;
+  return `<article class="card">
+    <img src="${esc(img)}" alt="${esc(p.nama)}" loading="lazy">
+    <div class="body">
+      <div>${p.unggulan ? '<span class="badge star">⭐ Unggulan</span>' : ''}<span class="badge ${habis ? 'warn' : ''}">${habis ? 'Stok habis' : 'Stok: ' + p.stok}</span></div>
+      <h3>${esc(p.nama)}</h3>
+      <div class="muted">${esc(p.kategori)}</div>
+      <p class="muted" style="margin:0">${esc(p.deskripsi)}</p>
+      <div class="price">${esc(rupiah(p.harga))}</div>
+      <div style="margin-top:auto">${action}</div>
+    </div>
+  </article>`;
+}
+
+function renderCategories(){
+  const cats = [...new Set(products.map(p => p.kategori))].sort((a, b) => a.localeCompare(b, 'id'));
+  const cur = state.cat;
+  $('#cat').innerHTML = '<option value="">Semua kategori</option>' +
+    cats.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  state.cat = cats.includes(cur) ? cur : '';
+  $('#cat').value = state.cat;
+  $('#kategori-list').innerHTML = [...new Set([...CATEGORY_SUGGESTIONS, ...cats])]
+    .map(c => `<option value="${esc(c)}"></option>`).join('');
+}
+
+function renderCatalog(){
+  const list = filtered();
+  $('#count').textContent = `Menampilkan ${list.length} dari ${products.length} produk`;
+  $('#grid').innerHTML = list.map(cardHTML).join('');
+  $('#empty').classList.toggle('hidden', list.length > 0);
+}
+
+function renderDashboard(){
+  $('#stat-total').textContent = products.length;
+  $('#stat-stok').textContent = products.reduce((s, p) => s + p.stok, 0);
+  $('#stat-kat').textContent = new Set(products.map(p => p.kategori)).size;
+  $('#tbody').innerHTML = products.length
+    ? products.map(p => `<tr>
+        <td>
+          <div class="name-cell">
+            <img class="thumb" src="${esc(p.imageUrl ? p.imageUrl : illustrationFor(p))}" alt="${esc(p.nama)}" loading="lazy">
+            <div><strong>${esc(p.nama)}</strong><div class="muted">${esc(p.deskripsi.slice(0, 60))}</div></div>
+          </div>
+        </td>
+        <td>${esc(p.kategori)}</td>
+        <td>${esc(rupiah(p.harga))}</td>
+        <td>${p.stok}</td>
+        <td>${p.unggulan ? 'Ya' : 'Tidak'}</td>
+        <td><div class="row-actions">
+          <button class="ghost" type="button" data-act="edit" data-id="${esc(p.id)}">Ubah</button>
+          <button class="danger" type="button" data-act="del" data-id="${esc(p.id)}">Hapus</button>
+        </div></td>
+      </tr>`).join('')
+    : '<tr><td colspan="6">Belum ada produk. Tambahkan produk baru.</td></tr>';
+}
+
+function renderWaSettings(){
+  const n = settings.waNumber;
+  const isDefault = n === DEFAULT_WA;
+  $('#wa-current').innerHTML = `Nomor aktif: <strong>+${esc(n)}</strong>`;
+  $('#wa-note').textContent = 'Ini masih nomor placeholder. Ganti dengan nomor WhatsApp toko sebelum dipakai.';
+  $('#wa-note').classList.toggle('hidden', !isDefault);
+}
+
+function renderHero(){
+  $('#hero-art').innerHTML = svgWrap(ART.washer);
+}
+
+function renderAll(){
+  renderCategories();
+  renderCatalog();
+  renderDashboard();
+  renderWaSettings();
+}
+
+function setView(v){
+  state.view = v;
+  $('#view-catalog').classList.toggle('hidden', v !== 'catalog');
+  $('#view-dashboard').classList.toggle('hidden', v !== 'dashboard');
+  document.querySelectorAll('nav button').forEach(b => {
+    if (b.dataset.view === v) b.setAttribute('aria-current', 'page');
+    else b.removeAttribute('aria-current');
+  });
+}
+
+/* ============ FORM PRODUK ============ */
+function updatePreview(){
+  const f = $('#form').elements;
+  const url = f.imageUrl.value.trim();
+  const nama = f.nama.value.trim();
+  $('#preview').alt = nama || 'Pratinjau';
+  $('#preview').src = url && isSafeUrl(url)
+    ? url
+    : illustrationFor({ nama, kategori: f.kategori.value.trim() });
+}
+
+function openForm(id){
+  state.editingId = id;
+  const f = $('#form').elements;
+  const p = id ? products.find(x => x.id === id) : null;
+  $('#dlg-title').textContent = p ? 'Ubah produk' : 'Tambah produk';
+  f.nama.value = p ? p.nama : '';
+  f.kategori.value = p ? p.kategori : (state.cat || '');
+  f.harga.value = p ? p.harga : '';
+  f.stok.value = p ? p.stok : '';
+  f.deskripsi.value = p ? p.deskripsi : '';
+  f.imageUrl.value = p ? p.imageUrl : '';
+  f.unggulan.checked = p ? p.unggulan : false;
+  $('#form-err').textContent = '';
+  updatePreview();
+  $('#dlg').showModal();
+  f.nama.focus();
+}
+
+function readForm(){
+  const f = $('#form').elements;
+  const hargaRaw = f.harga.value.trim();
+  const stokRaw = f.stok.value.trim();
+  return {
+    nama: f.nama.value.trim(),
+    kategori: f.kategori.value.trim(),
+    harga: hargaRaw === '' ? NaN : Number(hargaRaw),
+    stok: stokRaw === '' ? NaN : Number(stokRaw),
+    deskripsi: f.deskripsi.value.trim(),
+    imageUrl: f.imageUrl.value.trim(),
+    unggulan: f.unggulan.checked
+  };
+}
+
+/* ============ EVENTS ============ */
+document.querySelectorAll('nav button').forEach(b =>
+  b.addEventListener('click', () => setView(b.dataset.view)));
+
+$('#q').addEventListener('input', e => { state.q = e.target.value; renderCatalog(); });
+$('#cat').addEventListener('change', e => { state.cat = e.target.value; renderCatalog(); });
+$('#sort').addEventListener('change', e => { state.sort = e.target.value; renderCatalog(); });
+
+// Fallback satu kali jika gambar gagal dimuat (termasuk URL pengguna)
+document.addEventListener('error', e => {
+  const img = e.target;
+  if (img.tagName === 'IMG' && !img.dataset.fb) {
+    img.dataset.fb = '1';
+    img.src = placeholderFor(img.alt);
+  }
+}, true);
+
+$('#btn-add').addEventListener('click', () => openForm(null));
+$('#cancel').addEventListener('click', () => $('#dlg').close());
+$('#form').addEventListener('input', updatePreview);
+
+$('#form').addEventListener('submit', e => {
+  e.preventDefault();
+  const data = readForm();
+  const errors = validate(data);
+  if (errors.length) {
+    $('#form-err').textContent = errors.join(' ');
+    return;
+  }
+  if (state.editingId) {
+    products = products.map(p => p.id === state.editingId ? { ...data, id: p.id } : p);
+    notify('Produk diperbarui.', 3000);
+  } else {
+    products = [...products, { ...data, id: newId() }];
+    notify('Produk ditambahkan.', 3000);
+  }
+  persist(products);
+  state.editingId = null;
+  $('#dlg').close();
+  renderAll();
+});
+
+$('#tbody').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  if (btn.dataset.act === 'edit') {
+    openForm(id);
+  } else if (btn.dataset.act === 'del') {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    if (window.confirm(`Hapus produk "${p.nama}"? Tindakan ini tidak bisa dibatalkan.`)) {
+      products = products.filter(x => x.id !== id);
+      persist(products);
+      renderAll();
+      notify('Produk dihapus.', 3000);
+    }
+  }
+});
+
+$('#btn-reset').addEventListener('click', () => {
+  if (window.confirm('Muat ulang 8 produk contoh? Semua perubahan akan diganti.')) {
+    products = clone(SAMPLE);
+    persist(products);
+    state.cat = '';
+    $('#q').value = '';
+    state.q = '';
+    renderAll();
+    notify('Data contoh dimuat ulang.', 3000);
+  }
+});
+
+// Pengaturan nomor WhatsApp
+$('#wa-input').addEventListener('input', e => {
+  const raw = e.target.value.trim();
+  const n = normalizeWa(raw);
+  $('#wa-err').textContent = '';
+  $('#wa-preview').textContent = raw === ''
+    ? ''
+    : (WA_RE.test(n) ? `Akan disimpan sebagai +${n}` : 'Format belum valid.');
+});
+
+$('#wa-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const n = normalizeWa($('#wa-input').value);
+  if (!WA_RE.test(n)) {
+    $('#wa-err').textContent = 'Nomor tidak valid. Gunakan format 08xxx atau 62xxx, 10–15 digit.';
+    return;
+  }
+  settings.waNumber = n;
+  if (saveSettings()) notify(`Nomor WhatsApp diubah menjadi +${n}.`, 4000);
+  $('#wa-input').value = '';
+  $('#wa-preview').textContent = '';
+  $('#wa-err').textContent = '';
+  renderAll();
+});
+
+$('#wa-reset').addEventListener('click', () => {
+  if (window.confirm('Kembalikan nomor WhatsApp ke placeholder?')) {
+    settings.waNumber = DEFAULT_WA;
+    saveSettings();
+    renderAll();
+    notify('Nomor WhatsApp dikembalikan ke placeholder.', 4000);
+  }
+});
+
+/* ============ INIT ============ */
+renderHero();
+setView('catalog');
+renderAll();
+</script>
 </body>
 </html>
